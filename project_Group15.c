@@ -12,18 +12,11 @@ int inputSecondDigit(void);/*input B from the keyboard*/
 
 int main(void){
     int a, b;
-    a = inputFurstDigit();       
-    
-    printf("You entered A with absolute value of %d\n", a);
-    printf("Binary value is: ");
-    decToBin(a);
+    a = inputFurstDigit();        
     printf("\n");
 
     b = inputSecondDigit();
-
-    printf("You entered B with absolute value of %d\n", b);
-    printf("Binary value is: ");
-    decToBin(b);
+    printf("\n");
     printf("\n\nThe sum of the differences between the numbers on bit level is: %d\n\n", numberDigits(a, b));
     return 0;
 }
@@ -41,6 +34,10 @@ int inputFurstDigit(void){
        	a = ~a;
        	a += 1;
     }
+    printf("You entered A with absolute value of %d\n", a);
+    printf("Binary value is: ");
+    decToBin(a);
+
     return a;
 }
 int inputSecondDigit(void){
@@ -57,6 +54,9 @@ int inputSecondDigit(void){
        	b = ~b;
        	b += 1;
     }
+    printf("You entered B with absolute value of %d\n", b);
+    printf("Binary value is: ");
+    decToBin(b);
    
     return b;
 }

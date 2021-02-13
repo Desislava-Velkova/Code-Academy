@@ -31,10 +31,11 @@ void input(char *text){
             printf("You reached the max size of the string\n");
             break;
         }
-    } 
+    }
+    *text = '\0';
 }
 void chekPalidrome(char *text){
-    int left = 0,count =0; 
+    int left = 0,count = 0; 
     int right = strlen(text) - 1; 
   
     while (right > left) 
@@ -42,7 +43,8 @@ void chekPalidrome(char *text){
         if (text[left++] != text[right--]) 
         { 
            count++;
+           break;
         } 
-    } 
-    (count)!=0 ?  printf("%s is Not Palindrome\n", text):printf("%s is palindrome\n", text);
+    }
+    (count) > 0 ?  printf("%s is not Palindrome\n", text):printf("%s is palindrome\n", text);
 }

@@ -17,32 +17,46 @@ struct Student{
     int age;
     char name[10];
     double average;
-    enum number number;
+    int number;
 };
-void fillStruct(struct Student ptr[]);
+void fillStruct(struct Student ptr[],char arr[]);
 
 int main(void){
     struct Student arr[20];
+    char file[1000];
+    int c;
+    int i = 0;
+    const char *remove_any_of = "\n\r";
 
-    fillStruct(arr);
+    while((c=getchar()) != EOF){
+        if(!strchr(remove_any_of,c)){
+            file[i]=c;
+        } else {
+            file[i]='|';
+        }
+        i++;
+    }
+    file[i] = '\0';
+
+    fillStruct(arr,file);
 
     return 0;
 }
-void fillStruct(struct Student ptr[]){
+void fillStruct(struct Student ptr[], char arr[]){
     char line[1000];
     const char delimiter[2] = ",";
     char* token; 
-    int i = 0,j = 0;
+    int i = 0,j = 0, k=0;
 
-    /*open the existing .csv file, "r" stands for ""Opens an existing text file for reading purpose".*/
-    FILE *fptr = fopen("C:\\Users\\stifa\\codeAcademy\\structs20.csv","r"); 
-
-    if(fptr == NULL){
-        printf("Error!");   
-        exit(1);             
-    }
-
-    while (fgets(line, sizeof(line), fptr) != NULL) {   /*reads a character from the input file referenced by ftpr*/
+    for(j=0; j < 20; j++){
+        i = 0;
+        fflush(stdin);
+        while(arr[k] != '|'){
+            line[i]=arr[k];
+            k++;
+            i++;
+        }
+        k++;
         i = 0;
         token = strtok(line, delimiter);  /* breaks string line into a series of tokens using the delimiter ",".*/
         while(token != NULL){   /*writes the inf from the file in the members of the struct*/
@@ -61,10 +75,9 @@ void fillStruct(struct Student ptr[]){
             token = strtok(NULL, delimiter);
             i++;
         }
-        j++;
+        memset(line,'\0',1000);
     }
     for(i=0; i<LENGTH; i++){
         printf("%d,%s,%lf,%d\n", ptr[i].age, ptr[i].name, ptr[i].average, ptr[i].number);
     }
-    fclose(fptr); /*close the file*/
 }

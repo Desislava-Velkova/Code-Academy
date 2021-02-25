@@ -34,15 +34,7 @@ int main(void){
 void fillStruct(struct Student ptr[], char (*names)[10]){
     int i, rand_num;
     srand((unsigned int)(time(NULL)));
-    FILE *fptr;
 
-   // use appropriate location if you are using MacOS or Linux
-    fptr = fopen("C:\\Users\\stifa\\codeAcademy\\structs20.csv","w");
-    if(fptr == NULL)
-    {
-        printf("Error!");   
-        exit(1);             
-    }
     for(i=0; i<LENGTH; i++){
         rand_num = (rand()%50)+18;
         ptr[i].age = rand_num; /*generate rand years from 18 to 68*/
@@ -52,8 +44,5 @@ void fillStruct(struct Student ptr[], char (*names)[10]){
         ptr[i].number = i+1;
 
         printf("%d,%s,%lf,%d\n", ptr[i].age, ptr[i].name, ptr[i].average, ptr[i].number);
-        fprintf(fptr,"%d,%s,%lf,%d\n", ptr[i].age, ptr[i].name, ptr[i].average, ptr[i].number);
     }
-    fclose(fptr);
-
 }

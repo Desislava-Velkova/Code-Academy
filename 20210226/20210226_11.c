@@ -12,7 +12,6 @@ struct node_t{
 struct node_t* allocMemory(void);
 
 int main(void){
-    //struct node_t *ptr = (struct node_t*) malloc(sizeof(struct node_t));
     struct node_t *ptr = allocMemory();
 
     free(ptr);

@@ -28,3 +28,11 @@ class LengthEx(Exception):
             print("You password need's to be at least from 8 symbols and you input %s\n" %self.length)
         elif self.length > 15:
             print("You password need's to be max from 15 symbols and you input %s\n" %self.length)
+
+class SpecialSymbEx(Exception):
+    def __init__(self, symbol):
+        self.symbol = symbol
+        
+    def message(self):
+            print("You password need's to have at least 1 special symbols, and you input %s\n" %self.symbol)
+       

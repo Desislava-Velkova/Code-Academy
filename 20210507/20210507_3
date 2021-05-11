@@ -1,0 +1,3 @@
+    3. Copy the files house1 and house5 to the $HOME/projects/houses/ directory.
+
+cp house1 house5 ~/projects/houses/

@@ -1,0 +1,3 @@
+    4. Remove the files house6, house7, and house8 without being prompted
+
+rm -rf house6 house7 house 8

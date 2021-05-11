@@ -1,0 +1,23 @@
+    2. Make the $HOME/projects/houses/doors/ directory path.
+Create the following empty fi les within this directory path
+(try using absolute and relative paths from your home directory):
+
+Examp.1 $HOME/projects/houses/bungalow.txt
+Examp.2 $HOME/projects/houses/doors/bifold.txt
+Examp.3 $HOME/projects/outdoors/vegetation/landscape.txt
+
+    1.With absolute pats:
+        Examp.1 touch /home/projects/houses bungalow.txt 
+
+        Examp.2 touch /home/projects/houses/doors bifold.txt 
+
+        Examp.3 touch /home/outdoors/vegetation landscape.txt 
+
+    2.With relative pats:
+    Assuming we are in $HOME/projects/houses/doors/ directory path.
+        
+        Examp.1 touch ../houses bungalow.txt
+
+        Examp.2 touch bifold.txt
+
+        Examp.3 touch ~/projects/houses/doors landsape.txt

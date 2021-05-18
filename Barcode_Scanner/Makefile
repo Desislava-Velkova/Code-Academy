@@ -31,7 +31,7 @@ LIB		:= lib
 TEST	:= test_cases
 
 ifeq ($(OS),Windows_NT)
-MAIN	:= main.dll
+MAIN	:= main.exe
 SOURCEDIRS	:= $(SRC)
 INCLUDEDIRS	:= $(INCLUDE)
 LIBDIRS		:= $(LIB)
@@ -91,5 +91,5 @@ clean:
 	@echo Cleanup complete!
 
 run: all
-	./$(OUTPUTMAIN)
+	$(OUTPUTMAIN)
 	@echo Executing 'run: all' complete!

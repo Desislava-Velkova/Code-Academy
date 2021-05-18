@@ -3,6 +3,19 @@
 
 #include "FileParses.h"
 
+
+FILE *fileOpen(char *fileName){
+    FILE *fp = NULL;
+    fp = fopen(fileName, "r+");
+
+    if(NULL == fp){
+        perror("Can't open file ");
+        exit(EXIT_FAILURE);
+    }
+
+    return fp;
+}
+
 int *AllocMatrix(int size){
     int *iPtr = NULL;
     iPtr = (int *) malloc (sizeof(int)* size);
@@ -30,14 +43,9 @@ void assignCorectNumber(int number, int *bin){
 void inputMatrix(void) {
     float number = 0;
 	int lenght=0;
-    FILE *fp = NULL;
-    fp = fopen("test_cases\\Test1.txt", "r+");
+    char *fileName = "test_cases\\Test1.txt";
 
-    if(NULL == fp){
-        perror("Can't open file ");
-        exit(EXIT_FAILURE);
-    }
-
+    FILE *fp = fileOpen(fileName);
     fscanf(fp, "%d", &lenght);
 
     int *bin = AllocMatrix(lenght); /* creating array for storage data from the file */

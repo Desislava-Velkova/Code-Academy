@@ -2,9 +2,11 @@
 #define FILEPARSES_H
 
 #include <errno.h>
+#include <stdio.h>
 
-void inputMatrix(void);
-void assignCorectNumber(int number, int *bin);
+FILE *fileOpen(char *fileName);
 int *AllocMatrix(int size);
+void assignCorectNumber(int number, int *bin);
+void inputMatrix(void);
 
 #endif /*FILEPARSES_H*/

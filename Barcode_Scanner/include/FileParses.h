@@ -3,12 +3,22 @@
 
 #include <stdio.h>
 
-FILE *fileOpen(char *fileName);
-int *AllocMatrix(int size);
-void assignCorectNumber(int number, int *bin);
-void inputMatrix(void);
+typedef struct{
+    char symbols[12];
+    int code[12];
+}CodeTable_t;
 
-//TODO: izmestvane v .h na barcoda
-void assignThinThickerLine(int lenght, int *bina, int *counterLen, int *bin);
+FILE *fileOpen(char *fileName);
+int *AllocIntArray(int size);
+float *AllocFloatArray(int size);
+char *AllocCharArray(int size);
+
+void translate(float *binData, int *outData, int lenght);
+void assignThinThickerLine(int lenght, int *tempData, int *binData);
+
+int *inputData(char *fileName);
+void inputCodeTable(CodeTable_t *codTable);
+int takeBinDataLen(void);
+
 
 #endif /*FILEPARSES_H*/

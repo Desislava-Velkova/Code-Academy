@@ -1,7 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "Defines.h"
 
 #include "FileParses.h"
+
+static int arrayLen = 0;
+
+int takeBinDataLen(void){
+    return arrayLen;
+}
 
 FILE *fileOpen(char *fileName)
 {
@@ -17,7 +24,7 @@ FILE *fileOpen(char *fileName)
     return fp;
 }
 
-int *AllocMatrix(int size)
+int *AllocIntArray(int size)
 {
     int *iPtr = NULL;
     iPtr = (int *)malloc(sizeof(int) * size);
@@ -32,82 +39,139 @@ int *AllocMatrix(int size)
     return iPtr;
 }
 
-void assignCorectNumber(int number, int *bin)
-{
-    if (number > 0.5)
+float *AllocFloatArray(int size) {
+    float *fPtr = NULL;
+    fPtr = (float *)malloc(sizeof(float) * size);
+
+    if (NULL == fPtr)
     {
-        *bin = 0;
+        printf("Allocation memory failed!\n");
+
+        exit(EXIT_FAILURE);
     }
-    else
-    {
-        *bin = 1;
-    }
+
+    return fPtr;
 }
 
-void assignThinThickerLine(int lenght, int *bina, int *counterLen, int *bin)
-{
+char *AllocCharArray(int size) {
+    char *cPtr = NULL;
+    cPtr = (char*)calloc(sizeof(char) ,size);
+
+    if (NULL == cPtr)
+    {
+        printf("Allocation memory failed!\n");
+
+        exit(EXIT_FAILURE);
+    }
+
+    return cPtr;
+}
+
+void translate(float *initialData, int *outData, int lenght) {
+    for (int i = 1; i < lenght; i++)
+    {
+        if (initialData[i] < 0.49)
+        {
+           if (initialData[i]> 0.45)
+           {
+                if (initialData[i - 1] < 0.49 && initialData[i + 1] < 0.49)
+                {
+                    *outData = 0;
+                    outData++;
+                } else {
+                    *outData = 1;
+                    outData++;
+                }
+            } else {
+                *outData = 1;
+                outData++;
+            }
+        } else {
+            *outData = 0;
+            outData++;
+        }
+    }
+
+}
+
+void assignThinThickerLine(int lenght, int *tempData, int *binData) {
+
     for (int i = 0; i < lenght; i++)
     {
-        if (bin[i] == 1 && bin[i + 1] == 1)
+        if (tempData[i] == 1 && tempData[i + 1] == 1)
         {
-            *bina = 1;
-            bina++;
+            *binData = 1;
+            binData++;
             i++;
-            //TODO: DA SE FIXNE NE PISHE V STOINOSTA, SAMO MESTI POITERA
-            *counterLen +=1;
+            arrayLen++;
         }
-        else if (bin[i] == 1 && bin[i + 1] == 0)
+        else if (tempData[i] == 1 && tempData[i + 1] == 0)
         {
-            *bina = 0;
-            bina++;
+            *binData = 0;
+            binData++;
             i++;
-            *counterLen+=1;
+            arrayLen++;
         }
     }
 }
 
-void inputMatrix(void)
-{
-    float number = 0;
+int *inputData(char *fileName) {
+    float *initialData = NULL;
+    int *tempData = NULL, *binData = NULL;
     int lenght = 0;
-    int counterLen = 0;
-    char *fileName = "test_cases\\Test1.txt";
+    float number = 0;
 
     FILE *fp = fileOpen(fileName);
     fscanf(fp, "%d", &lenght);
 
-    int *bin = AllocMatrix(lenght); /* creating array for storage data from the file */
-    int *bina = AllocMatrix(lenght);
-    int *ptr = bina;
+    initialData = AllocFloatArray(lenght);
+    tempData = AllocIntArray(lenght);
+    binData = AllocIntArray(lenght);
 
     for (int i = 0; i < lenght; i++)
     {
         fscanf(fp, " %f ", &number); /* read's tha data from the file */
 
-        assignCorectNumber(number, &bin[i]);
+        initialData[i] = number;
     }
-    //TODO: da se izmestqt v barcode faila
-    assignThinThickerLine(lenght, bina, &counterLen, bin);
-    printf("%d", counterLen);
+    translate(initialData, tempData, lenght);
 
-    for (int i = 0; i < counterLen; i++)
+    assignThinThickerLine(lenght, tempData, binData);
+    /*char codove[6][5];
+    for (int i = 0,k=0; i < arrayLen; i+=5,k++)
     {
-        printf(" %d ", *(ptr + i));
-    }
-
-    /* 
-    int size = 5;
-    int *resArray = AllocMatrix(size);
-   for (int i = 0; i < counterLen; i++)
-    {
-        if (*(ptr + i) == 0 && *(ptr + i + 1) == 0 && *(ptr + i + 2) == 1 && *(ptr + i + 3) == 1 && *(ptr + i + 4) == 0)
+        for (int j = i; j < 5; j++)
         {
-            i = i + 5;
-
-            *resArray = realloc(resArray, size);
-            *resArray = realloc(resArray, size);
+            codove[k][j]=binData[j]+48;
         }
+        
+    }
+
+     for (int i = 0; i < 6; i++)
+    {
+        if (strcpy())
+        {
+        }
+        
     }*/
-    //TODO: da se izchsti alloca
+    
+    free(tempData);
+    free(initialData);
     fclose(fp);
+
+    return binData;
 }
+void inputCodeTable(CodeTable_t *codTable){
+    char *fileName = "test_cases\\CodeTable.txt";
+    FILE *fp = fileOpen(fileName);
+
+    for(int i=0; i<CODE_TABLE_LEN; i++){
+        fscanf(fp, " %c ", (codTable->symbols + i));
+    }
+
+    for(int i=0; i<CODE_TABLE_LEN; i++){
+        fscanf(fp, " %d ", (codTable->code + i));
+    }
+}
+
+

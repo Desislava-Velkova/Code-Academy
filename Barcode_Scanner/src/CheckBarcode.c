@@ -10,15 +10,12 @@ static int barCodeLength = 0;
 
 int takeBarcodeLen(void)
 {
-    return barCodeLength;
+    return barCodeLength - 2;
 }
-
-static bool checkSumValidation(char *decoded, int size)
+int checkC(char *decoded, int size)
 {
-
     int sum = 0;
-    char *ptr = decoded;
-    for (int i = 1; i <= size - 2; i++)
+    for (int i = 1; i <= size; i++)
     {
         int digit = 0;
         if (*decoded == '-')
@@ -27,44 +24,58 @@ static bool checkSumValidation(char *decoded, int size)
         }
         else
         {
-            digit = *decoded - 48;
+            digit = *decoded - ASCII;
         }
 
-        sum += ((size - 2 - i) % 10 + 1) * digit;
+        sum += ((size - i) % 10 + 1) * digit;
         decoded++;
     }
-    sum = sum % 11;
-    printf("\n in calc func = %d", (*decoded - 48));
-    if (sum != (*decoded - 48))
-    {
-        return false;
-    }
-
-    sum = 0;
-    decoded = &ptr;
-    for (int i = 1; i <= size - 1; i++)
+    return sum % 11;
+}
+int checkK(char *decoded, int size)
+{
+    int sum = 0;
+    for (int i = 1; i <= size + 1; i++)
     {
         int digit = 0;
-        if (*ptr == '-')
+        if (*decoded == '-')
         {
             digit = 10;
         }
         else
         {
-            digit = *ptr - 48;
+            digit = *decoded - ASCII;
         }
-        printf("%d ", digit);
-        sum += ((size - 1 - i) % 9 + 1) * digit;
-        ptr++;
-    }
-    sum = sum % 11;
 
-    if (sum == (*ptr - 48))
+        sum += ((size - i + 1) % 9 + 1) * digit;
+        decoded++;
+    }
+    return (sum % 11);
+}
+bool checkSumValidation(char *decoded, int size)
+{
+
+    char *ptr = decoded;
+    size = size - 2;
+
+    if (checkC(decoded, size) == (*(decoded + size) - ASCII))
     {
-        return true;
+        if (checkK(ptr, size) == (*(ptr + size + 1) - ASCII))
+        {
+
+            return true;
+        }
+        else
+        {
+
+            return false;
+        }
     }
     else
+    {
+
         return false;
+    }
 }
 bool isCorrectBarcode(CodeTable_t *codTable, int *bina, int counterLen)
 {
@@ -94,15 +105,13 @@ bool isCorrectBarcode(CodeTable_t *codTable, int *bina, int counterLen)
 int *reverse(int *arr, int n)
 {
     int temp = 0;
-
     for (int low = 0, high = n - 1; low < high; low++, high--)
     {
         temp = arr[low];
         arr[low] = arr[high];
         arr[high] = temp;
     }
-
-    return *arr;
+    return arr;
 }
 char *assignBarcode(int counterLen, int *binData, CodeTable_t *codTable)
 {
@@ -117,7 +126,7 @@ char *assignBarcode(int counterLen, int *binData, CodeTable_t *codTable)
             if (i % SIZE_ELEMENT == 0)
             {
                 findCodeinTable(element, barcode, codTable);
-                printf("\n%s", barcode); //TODO za test, da se iztrie
+
                 barcode++;
                 barCodeLength++;
                 element = binData[i];
@@ -138,7 +147,7 @@ char *assignBarcode(int counterLen, int *binData, CodeTable_t *codTable)
                 if (i % SIZE_ELEMENT == 0)
                 {
                     findCodeinTable(element, barcode, codTable);
-                    printf("\n%s", barcode); //TODO za test, da se iztrie
+
                     barcode++;
                     barCodeLength++;
                     element = binData[i];
@@ -151,24 +160,13 @@ char *assignBarcode(int counterLen, int *binData, CodeTable_t *codTable)
         }
         else
         {
-            printf("Barcode truncated. Move the scanner to the left.\n");
-            return 1;
+
+            printf("Barcode truncated. Move the scanner.\n");
+            exit(EXIT_SUCCESS);
         }
     }
 
     return start += 2;
-}
-
-bool isCorectReaded(int counterLen, int *binData, CodeTable_t *codTable)
-{
-    int *reverseData = reverse(binData, counterLen);
-
-    if (assignBarcode(counterLen, binData, codTable) == 1 || assignBarcode(counterLen, reverseData, codTable) == 1)
-    {
-        return false;
-    }
-
-    return true;
 }
 
 void findCodeinTable(int element, char *barcode, CodeTable_t *codTable)
@@ -179,11 +177,10 @@ void findCodeinTable(int element, char *barcode, CodeTable_t *codTable)
         if (element == codTable->code[i] && !isStartStop(codTable, element))
         {
             *barcode = codTable->symbols[i];
-            printf("\n%s", barcode); //TODO za test, da se iztrie
+
             break;
         }
     }
-    //printf("\n%s", *barcode); //TODO za test, da se iztrie
 }
 
 int catIntegers(unsigned int firstNumb, unsigned int secondNumb)
@@ -213,7 +210,8 @@ bool isStartStop(CodeTable_t *codTable, int element)
 
 void printBarcode(char *array, int size)
 {
-    if (checkSumValidation(array, 8))
+
+    if (checkSumValidation(array, size))
     {
         printf("\nThe barcode is:\t");
         for (int i = 0; i < size; i++)
@@ -223,6 +221,6 @@ void printBarcode(char *array, int size)
         }
     }
     else
-        printf("the control digits are not ok!");
+        printf("The control digits are wrong!");
     exit(EXIT_SUCCESS);
 }

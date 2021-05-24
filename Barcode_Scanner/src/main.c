@@ -4,8 +4,8 @@
 #include "FileParses.h"
 #include "CheckBarcode.h"
 
-
-int main(void) {
+int main(void)
+{
 	CodeTable_t codTable;
 	char *fileName = "test_cases\\Test2.txt";
 
@@ -15,18 +15,14 @@ int main(void) {
 
 	inputCodeTable(&codTable);
 
-	//if (isCorectReaded(int counterLen, int *binData, CodeTable_t *codTable))
-
 	char *barcode = assignBarcode(BinDataLength, binData, &codTable);
-	
 
 	int barcodeLength = takeBarcodeLen();
 
 	printBarcode(barcode, barcodeLength);
 
-
 	free(barcode);
 	free(binData);
-	
+
 	return 0;
 }

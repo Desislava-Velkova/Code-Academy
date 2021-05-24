@@ -1,2 +1,0 @@
-Изход:
-Barcode truncated. Move the scanner to the left.

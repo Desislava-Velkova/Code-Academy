@@ -18,6 +18,7 @@ LFLAGS =
 # define output directory
 OUTPUT	:= output
 
+VAL := valgrind --leak-check=full
 # define source directory
 SRC		:= src
 
@@ -31,7 +32,7 @@ LIB		:= lib
 TEST	:= test_cases
 
 ifeq ($(OS),Windows_NT)
-MAIN	:= main.exe
+MAIN	:= main
 SOURCEDIRS	:= $(SRC)
 INCLUDEDIRS	:= $(INCLUDE)
 LIBDIRS		:= $(LIB)
@@ -42,8 +43,7 @@ else
 MAIN	:= main
 SOURCEDIRS	:= $(shell find $(SRC) -type d)
 INCLUDEDIRS	:= $(shell find $(INCLUDE) -type d)
-LIBDIRS		:= $(shell find $(LIB) -type d)
-FIXPATH = $1
+
 RM = rm -f
 MD	:= mkdir -p
 endif
@@ -51,8 +51,7 @@ endif
 # define any directories containing header files other than /usr/include
 INCLUDES	:= $(patsubst %,-I%, $(INCLUDEDIRS:%/=%))
 
-# define the C libs
-LIBS		:= $(patsubst %,-L%, $(LIBDIRS:%/=%))
+
 
 # define the C source files
 SOURCES		:= $(wildcard $(patsubst %,%/*.c, $(SOURCEDIRS)))
@@ -68,14 +67,14 @@ OBJECTS		:= $(SOURCES:.c=.o)
 
 OUTPUTMAIN	:= $(call FIXPATH,$(OUTPUT)/$(MAIN))
 
-all: $(OUTPUT) $(MAIN)
+all:  $(OUTPUT) $(MAIN)
 	@echo Executing 'all' complete!
 
 $(OUTPUT):
 	$(MD) $(OUTPUT)
 
 $(MAIN): $(OBJECTS) 
-	$(CC) $(CFLAGS) $(INCLUDES) -o $(OUTPUTMAIN) $(OBJECTS) $(LFLAGS) $(LIBS)
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(OUTPUTMAIN) $(OBJECTS) $(LFLAGS) 
 
 # this is a suffix replacement rule for building .o's from .c's
 # it uses automatic variables $<: the name of the prerequisite of
@@ -92,4 +91,4 @@ clean:
 
 run: all
 	$(OUTPUTMAIN)
-	@echo Executing 'run: all' complete!
+	@echo Executing 'run: all' come!

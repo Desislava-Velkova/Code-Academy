@@ -130,30 +130,14 @@ int *inputData(char *fileName) {
 
     for (int i = 0; i < lenght; i++)
     {
-        fscanf(fp, " %f ", &number); /* read's tha data from the file */
+        fscanf(fp, " %f ", &number); 
 
         initialData[i] = number;
     }
     translate(initialData, tempData, lenght);
 
     assignThinThickerLine(lenght, tempData, binData);
-    /*char codove[6][5];
-    for (int i = 0,k=0; i < arrayLen; i+=5,k++)
-    {
-        for (int j = i; j < 5; j++)
-        {
-            codove[k][j]=binData[j]+48;
-        }
-        
-    }
-
-     for (int i = 0; i < 6; i++)
-    {
-        if (strcpy())
-        {
-        }
-        
-    }*/
+    
     
     free(tempData);
     free(initialData);

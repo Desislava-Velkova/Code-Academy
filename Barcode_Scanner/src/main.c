@@ -7,7 +7,7 @@
 int main(void)
 {
 	CodeTable_t codTable;
-	char *fileName = "test_cases\\Test2.txt";
+	char *fileName = "..\\test_cases\\Test3.txt";
 
 	int *binData = inputData(fileName);
 

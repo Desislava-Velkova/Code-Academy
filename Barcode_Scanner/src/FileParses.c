@@ -68,13 +68,15 @@ char *AllocCharArray(int size) {
 }
 
 void translate(float *initialData, int *outData, int lenght) {
+    float upper=0.49f;
+    float downer=0.45f;
     for (int i = 1; i < lenght; i++)
     {
-        if (initialData[i] < 0.49)
+        if (initialData[i] < upper)
         {
-           if (initialData[i]> 0.45)
+           if (initialData[i]> downer)
            {
-                if (initialData[i - 1] < 0.49 && initialData[i + 1] < 0.49)
+                if (initialData[i - 1] < downer && initialData[i + 1] < upper)
                 {
                     *outData = 0;
                     outData++;
@@ -146,7 +148,7 @@ int *inputData(char *fileName) {
     return binData;
 }
 void inputCodeTable(CodeTable_t *codTable){
-    char *fileName = "test_cases\\CodeTable.txt";
+    char *fileName = "..\\test_cases\\CodeTable.txt";
     FILE *fp = fileOpen(fileName);
 
     for(int i=0; i<CODE_TABLE_LEN; i++){

@@ -55,7 +55,7 @@ print("\nReading the whole file in list ")
 
 txt = open('text.txt' , 'r')
 
-lines = txt.readline()
+lines = txt.readlines()
 
 for line in lines:
     print(line)
